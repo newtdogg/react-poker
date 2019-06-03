@@ -10,7 +10,6 @@ class Player extends Component {
 		this.state = {}
 	}
 	handleDeletePlayer = () => {
-		console.log(this.props.index)
 		this.props.onDelete(this.props.index);
 	}
 	render() {

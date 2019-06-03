@@ -15,7 +15,8 @@ class App extends Component {
 		this.state = {
 			players: ['Ted', 'Penny'],
 			errorMessage: '',
-			playerIndex: ''
+			playerIndex: '',
+			hands: []
 		}
 	}
 	addPlayer = () => {
@@ -36,12 +37,20 @@ class App extends Component {
 			this.setState({errorMessage: 'The min number of players is 2'})
 		}
 	}
+	shuffleAndDeal = hands => {
+		this.setState({hands})
+	}
 	render() {
 		return (
 				<Layout>
 					<section>
 						<h1>Cards deck</h1>
-						<Deck suits={suits} values={values} />
+						<Deck
+							suits={suits}
+							values={values}
+							numberOfPlayers={this.state.players.length}
+							handleShuffleAndDeal={this.shuffleAndDeal}
+						/>
 					</section>
 					<section>
 						<header>
