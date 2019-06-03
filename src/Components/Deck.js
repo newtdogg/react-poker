@@ -1,18 +1,36 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Component } from "react";
 import { Card, StyledDeck } from "../Styles/Styled";
 
-const Deck = ({ suits, values }) => (
-	<StyledDeck>
-		{suits.map(suit => (
-			<Fragment key={suit}>
-				{values.map(value => (
-					<Card key={suit+value} suit={suit} value={value}>
-						{value}
+class Deck extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			deck: this.shuffleDeck()
+		}
+	}
+	componentDidMount() {
+		this.shuffleDeck();
+	}
+	shuffleDeck = () => {
+		const deck = [];
+		this.props.suits.forEach(suit => {
+			this.props.values.forEach(value => {
+				deck.push({suit, value, string: `${suit}${value}`})
+			});
+		});
+		return deck;
+	}
+	render() {
+		return (
+			<StyledDeck>
+				{this.state.deck.map(card => (
+					<Card key={card.suit+card.value} suit={card.suit} value={card.value}>
+						{card.value}
 					</Card>
 				))}
-			</Fragment>
-		))}
-	</StyledDeck>
-);
+			</StyledDeck>
+		)
+	}
+};
 
 export default Deck;
