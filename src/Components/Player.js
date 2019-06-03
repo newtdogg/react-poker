@@ -19,7 +19,7 @@ class Player extends Component {
 				<p>
 					{this.props.name}
 					<Button icon="✏️">Edit</Button>
-					<button onClick={this.handleDeletePlayer} icon="🔥">Remove</button>
+					<Button onClick={this.handleDeletePlayer} icon="🔥">Remove</Button>
 				</p>
 				<PlayerHand>
 						<Card suit="D" value="A" selected={true}>

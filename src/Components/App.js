@@ -5,7 +5,7 @@ import { suits, values } from "../utils";
 import Layout from "./Layout";
 import Deck from "./Deck";
 import Player from "./Player";
-// import Button from "./Button";
+import Button from "./Button";
 
 import { Footer } from "../Styles/Styled";
 
@@ -46,6 +46,9 @@ class App extends Component {
 					<section>
 						<header>
 							<h1>Players</h1>
+							<Button onClick={this.addPlayer}>Add new player</Button>
+							<Button icon="🏆">Find the winner</Button>
+							<p>{this.state.errorMessage}</p>
 						</header>
 						<section>
 							{this.state.players.map((name, index) => {
@@ -53,9 +56,7 @@ class App extends Component {
 							})}
 						</section>
 						<Footer>
-							<button onClick={this.addPlayer}>Add new player</button>
-							<button icon="🏆">Find the winner</button>
-							<p>{this.state.errorMessage}</p>
+
 						</Footer>
 					</section>
 
