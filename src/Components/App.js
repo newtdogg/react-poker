@@ -64,7 +64,11 @@ class App extends Component {
 		}
 	}
 	shuffleAndDeal = hands => {
-		this.setState({hands, winnerIndex: -1})
+		const players = this.state.players;
+		players.forEach(player => {
+			player.isWinner = false;
+		});
+		this.setState({hands, players})
 	}
 	render() {
 		return (
