@@ -10,6 +10,14 @@ class Deck extends Component {
 			hands: []
 		}
 	}
+	reset = () => {
+		const hands = [];
+		for(let i = 0; i < this.props.numberOfPlayers; i++) {
+			hands.push([]);
+		}
+		this.setState({deck: this.shuffleDeck()});
+		this.props.handleShuffleAndDeal(hands);
+	}
 	shuffleDeck = () => {
 		const deck = [];
 		this.props.suits.forEach(suit => {
@@ -25,10 +33,11 @@ class Deck extends Component {
 		return deck;
 	}
 	checkRandomNum = (nums) => {
-		const rndNum = Math.floor(Math.random() * this.state.deck.length);
+		const rndNum = Math.floor(Math.random() * 52);
 		if(nums.includes(rndNum)){
 			return this.checkRandomNum(nums);
 		} else {
+			console.log(rndNum);
 			return rndNum;
 		}
 	}
@@ -41,6 +50,7 @@ class Deck extends Component {
 				const hand = [];
 				for(let x = 0; x < 5; x++) {
 					const rndNum = this.checkRandomNum(randomNumbers)
+					randomNumbers.push(rndNum)
 					const card = dealtDeck[rndNum];
 					dealtDeck[rndNum].active = true;
 					hand.push(card);
@@ -68,6 +78,7 @@ class Deck extends Component {
 					</Card>
 				))}
 				<Button onClick={this.handleDealHands}>Deal</Button>
+				<Button onClick={this.reset}>Reset</Button>
 			</StyledDeck>
 		)
 	}
