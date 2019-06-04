@@ -6,7 +6,8 @@ class Deck extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			deck: this.shuffleDeck()
+			deck: this.shuffleDeck(),
+			hands: []
 		}
 	}
 	shuffleDeck = () => {
@@ -32,34 +33,41 @@ class Deck extends Component {
 	// 	}
 	// }
 	dealHands = numberOfPlayers => {
-		const dealtDeck = this.state.deck;
-		const deckWithCardsRemoved = this.state.deck;
-		const hands = [];
-		console.log(numberOfPlayers)
-		for(let i = 0; i < numberOfPlayers; i++) {
-			const hand = [];
-			for(let x = 0; x < 5; x++) {
-				const rndNum = Math.floor(Math.random() * deckWithCardsRemoved.length);
-				deckWithCardsRemoved.splice(rndNum, 1);
-				const card = dealtDeck[rndNum];
-				dealtDeck[rndNum].active = true;
-				hand.push(card)
+		this.setState({ deck: this.shuffleDeck()}, () => {
+			const deckWithCardsRemoved = this.state.deck;
+			const dealtCards = [];
+			const hands = [];
+			for(let i = 0; i < numberOfPlayers; i++) {
+				const hand = [];
+				for(let x = 0; x < 5; x++) {
+					const rndNum = Math.floor(Math.random() * deckWithCardsRemoved.length);
+					const card = deckWithCardsRemoved.splice(rndNum, 1);
+					card[0].active = true;
+					hand.push(...card);
+				}
+				hands.push(hand);
+				dealtCards.push(...hand);
 			}
-			hands.push(hand);
-		}
-		this.setState({ deck: dealtDeck});
-		return hands;
+			const newDeck = deckWithCardsRemoved.concat(dealtCards)
+			console.log(newDeck)
+			this.setState({hands, deck: newDeck})
+		})
 	}
-	handleDealHands = () => {
-		const hands = this.dealHands(this.props.numberOfPlayers);
-		this.props.handleShuffleAndDeal(hands)
-		console.log(hands);
+	handleDealHands = async () => {
+		await this.dealHands(this.props.numberOfPlayers);
+		await this.props.handleShuffleAndDeal(this.state.hands)
+		await console.log(this.state.hands);
 	}
 	render() {
 		return (
 			<StyledDeck>
 				{this.state.deck.map(card => (
-					<Card key={card.suit+card.value} suit={card.suit} value={card.value}>
+					<Card
+						key={card.suit+card.value}
+						suit={card.suit}
+						value={card.value}
+						selected={card.active}
+					>
 						{card.value}
 					</Card>
 				))}
