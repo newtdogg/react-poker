@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import poker from 'poker-hands';
 
 import { suits, values } from "../utils";
 
@@ -30,6 +31,19 @@ class App extends Component {
 			this.setState({errorMessage: 'The max number of players is 6'})
 		}
 	}
+	evaluateHands = () => {
+		const handsToEvaluate = [];
+		this.state.hands.forEach(hand => {
+			const handStringArray = [];
+			hand.forEach(card => {
+				handStringArray.push(card.string);
+			});
+			const handString = handStringArray.join(' ');
+			handsToEvaluate.push(handString);
+		});
+		const winner = poker.judgeWinner(handsToEvaluate);
+		console.log(winner);
+	}
 	handleRemovePlayer = index => {
 		if(this.state.players.length > 2) {
 			const players = this.state.players;
@@ -46,41 +60,41 @@ class App extends Component {
 	}
 	render() {
 		return (
-				<Layout>
+			<Layout>
+				<section>
+					<h1>Cards deck</h1>
+					<Deck
+						suits={suits}
+						values={values}
+						numberOfPlayers={this.state.players.length}
+						handleShuffleAndDeal={this.shuffleAndDeal}
+						reset={this.reset}
+					/>
+				</section>
+				<section>
+					<header>
+						<h1>Players</h1>
+						<Button icon="🙋‍" onClick={this.addPlayer}>Add new player</Button>
+						<Button icon="🏆" onClick={this.evaluateHands}>Find the winner</Button>
+						<p>{this.state.errorMessage}</p>
+					</header>
 					<section>
-						<h1>Cards deck</h1>
-						<Deck
-							suits={suits}
-							values={values}
-							numberOfPlayers={this.state.players.length}
-							handleShuffleAndDeal={this.shuffleAndDeal}
-							reset={this.reset}
-						/>
+						{this.state.players.map((name, index) => {
+							return <Player
+								name={name}
+								hand={this.state.hands[index]}
+								index={index}
+								key={index}
+								onDelete={this.handleRemovePlayer}
+							/>
+						})}
 					</section>
-					<section>
-						<header>
-							<h1>Players</h1>
-							<Button icon="🙋‍" onClick={this.addPlayer}>Add new player</Button>
-							<Button icon="🏆">Find the winner</Button>
-							<p>{this.state.errorMessage}</p>
-						</header>
-						<section>
-							{this.state.players.map((name, index) => {
-								return <Player
-									name={name}
-									hand={this.state.hands[index]}
-									index={index}
-									key={index}
-									onDelete={this.handleRemovePlayer}
-								/>
-							})}
-						</section>
-						<Footer>
+					<Footer>
 
-						</Footer>
-					</section>
+					</Footer>
+				</section>
 
-				</Layout>
+			</Layout>
 		);
 	}
 }
