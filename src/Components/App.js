@@ -54,6 +54,7 @@ class App extends Component {
 							values={values}
 							numberOfPlayers={this.state.players.length}
 							handleShuffleAndDeal={this.shuffleAndDeal}
+							reset={this.reset}
 						/>
 					</section>
 					<section>
