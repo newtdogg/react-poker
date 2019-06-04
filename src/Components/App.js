@@ -16,14 +16,16 @@ class App extends Component {
 			players: ['Ted', 'Penny'],
 			errorMessage: '',
 			playerIndex: '',
-			hands: []
+			hands: [[], []]
 		}
 	}
 	addPlayer = () => {
 		if(this.state.players.length < 6) {
 			const updatedPlayers = this.state.players;
 			updatedPlayers.push(`Player ${this.state.players.length + 1}`)
-			this.setState({players: updatedPlayers});
+			const updatedHands = this.state.hands;
+			updatedHands.push([]);
+			this.setState({players: updatedPlayers, hands: updatedHands});
 		} else {
 			this.setState({errorMessage: 'The max number of players is 6'})
 		}
@@ -32,7 +34,9 @@ class App extends Component {
 		if(this.state.players.length > 2) {
 			const players = this.state.players;
 			players.splice(index, 1);
-			this.setState({players});
+			const updatedHands = this.state.hands;
+			updatedHands.pop();
+			this.setState({players, hands: updatedHands});
 		} else {
 			this.setState({errorMessage: 'The min number of players is 2'})
 		}
@@ -55,13 +59,19 @@ class App extends Component {
 					<section>
 						<header>
 							<h1>Players</h1>
-							<Button onClick={this.addPlayer}>Add new player</Button>
+							<Button icon="🙋‍" onClick={this.addPlayer}>Add new player</Button>
 							<Button icon="🏆">Find the winner</Button>
 							<p>{this.state.errorMessage}</p>
 						</header>
 						<section>
 							{this.state.players.map((name, index) => {
-								return <Player onDelete={this.handleRemovePlayer} name={name} index={index} key={index}/>
+								return <Player
+									name={name}
+									hand={this.state.hands[index]}
+									index={index}
+									key={index}
+									onDelete={this.handleRemovePlayer}
+								/>
 							})}
 						</section>
 						<Footer>

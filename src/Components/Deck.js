@@ -53,7 +53,6 @@ class Deck extends Component {
 	handleDealHands = async () => {
 		await this.dealHands(this.props.numberOfPlayers);
 		await this.props.handleShuffleAndDeal(this.state.hands)
-		await console.log(this.state.hands);
 	}
 	render() {
 		return (

@@ -21,21 +21,11 @@ class Player extends Component {
 					<Button onClick={this.handleDeletePlayer} icon="🔥">Remove</Button>
 				</p>
 				<PlayerHand>
-						<Card suit="D" value="A" selected={true}>
-							A
+					{this.props.hand.map((card, index) => {
+						return <Card suit={card.suit} value={card.value} key={index}>
+						{card.value}
 						</Card>
-						<Card suit="D" value="K">
-							K
-						</Card>
-						<Card suit="D" value="Q">
-							Q
-						</Card>
-						<Card suit="D" value="J">
-							J
-						</Card>
-						<Card suit="D" value="T">
-							T
-						</Card>
+					})}
 				</PlayerHand>
 			</article>
 		)
