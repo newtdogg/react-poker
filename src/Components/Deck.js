@@ -24,33 +24,30 @@ class Deck extends Component {
 		});
 		return deck;
 	}
-	// checkRandomNum = (nums) => {
-	// 	const rndNum = Math.floor(Math.random() * this.state.deck.length);
-	// 	if(nums.includes(rndNum)){
-	// 		return this.checkRandomNum(nums);
-	// 	} else {
-	// 		return rndNum;
-	// 	}
-	// }
+	checkRandomNum = (nums) => {
+		const rndNum = Math.floor(Math.random() * this.state.deck.length);
+		if(nums.includes(rndNum)){
+			return this.checkRandomNum(nums);
+		} else {
+			return rndNum;
+		}
+	}
 	dealHands = numberOfPlayers => {
 		this.setState({ deck: this.shuffleDeck()}, () => {
-			const deckWithCardsRemoved = this.state.deck;
-			const dealtCards = [];
+			const dealtDeck = this.state.deck;
 			const hands = [];
+			const randomNumbers = [];
 			for(let i = 0; i < numberOfPlayers; i++) {
 				const hand = [];
 				for(let x = 0; x < 5; x++) {
-					const rndNum = Math.floor(Math.random() * deckWithCardsRemoved.length);
-					const card = deckWithCardsRemoved.splice(rndNum, 1);
-					card[0].active = true;
-					hand.push(...card);
+					const rndNum = this.checkRandomNum(randomNumbers)
+					const card = dealtDeck[rndNum];
+					dealtDeck[rndNum].active = true;
+					hand.push(card);
 				}
 				hands.push(hand);
-				dealtCards.push(...hand);
 			}
-			const newDeck = deckWithCardsRemoved.concat(dealtCards)
-			console.log(newDeck)
-			this.setState({hands, deck: newDeck})
+			this.setState({hands, deck: dealtDeck})
 		})
 	}
 	handleDealHands = async () => {
