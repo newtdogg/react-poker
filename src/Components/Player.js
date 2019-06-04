@@ -16,7 +16,7 @@ class Player extends Component {
 		this.props.onDelete(this.props.index);
 	}
 	enterNameToggle = () => {
-		if(this.state.nameInput === false) {
+		if (this.state.nameInput === false) {
 			this.setState({nameInput: true})
 		} else {
 			this.setState({nameInput: false})
@@ -30,7 +30,8 @@ class Player extends Component {
 	}
 	render() {
 		let nameForm;
-		if(this.state.nameInput === true) {
+		let isWinner;
+		if (this.state.nameInput === true) {
 			nameForm = <form>
 				<label>New Name:
 				<input value={this.state.name} onChange={this.handleNameChange} type="text" />
@@ -38,10 +39,13 @@ class Player extends Component {
 				<Button onClick={this.toggleFormOff}>Done</Button>
 			</form>
 		}
+		if (this.props.isWinner) {
+			isWinner = 'is the Winner!!!'
+		}
 		return (
 			<article>
 				<p>
-					{this.state.name}
+					{this.state.name}{isWinner}
 					<Button onClick={this.enterNameToggle} icon="✏️">Edit</Button>
 					<Button onClick={this.handleDeletePlayer} icon="🔥">Remove</Button>
 				</p>

@@ -6,7 +6,7 @@ class Deck extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			deck: this.shuffleDeck(),
+			deck: this.organiseDeck(),
 			hands: []
 		}
 	}
@@ -15,10 +15,10 @@ class Deck extends Component {
 		for(let i = 0; i < this.props.numberOfPlayers; i++) {
 			hands.push([]);
 		}
-		this.setState({deck: this.shuffleDeck()});
+		this.setState({deck: this.organiseDeck()});
 		this.props.handleShuffleAndDeal(hands);
 	}
-	shuffleDeck = () => {
+	organiseDeck = () => {
 		const deck = [];
 		this.props.suits.forEach(suit => {
 			this.props.values.forEach(value => {
@@ -42,7 +42,7 @@ class Deck extends Component {
 		}
 	}
 	dealHands = numberOfPlayers => {
-		this.setState({ deck: this.shuffleDeck()}, () => {
+		this.setState({ deck: this.organiseDeck()}, () => {
 			const dealtDeck = this.state.deck;
 			const hands = [];
 			const randomNumbers = [];

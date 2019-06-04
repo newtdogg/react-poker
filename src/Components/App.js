@@ -14,21 +14,16 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			players: ['Ted', 'Penny'],
+			players: [{
+				name: 'Player 1',
+				isWinner: false
+			},{
+				name: 'Player 2',
+				isWinner: false
+			}],
 			errorMessage: '',
 			playerIndex: '',
 			hands: [[], []]
-		}
-	}
-	addPlayer = () => {
-		if(this.state.players.length < 6) {
-			const updatedPlayers = this.state.players;
-			updatedPlayers.push(`Player ${this.state.players.length + 1}`)
-			const updatedHands = this.state.hands;
-			updatedHands.push([]);
-			this.setState({players: updatedPlayers, hands: updatedHands});
-		} else {
-			this.setState({errorMessage: 'The max number of players is 6'})
 		}
 	}
 	evaluateHands = () => {
@@ -41,8 +36,21 @@ class App extends Component {
 			const handString = handStringArray.join(' ');
 			handsToEvaluate.push(handString);
 		});
-		const winner = poker.judgeWinner(handsToEvaluate);
-		console.log(winner);
+		const winnerIndex = poker.judgeWinner(handsToEvaluate);
+		const players = this.state.players;
+		players[winnerIndex].isWinner = true
+		this.setState({players})
+	}
+	addPlayer = () => {
+		if(this.state.players.length < 6) {
+			const updatedPlayers = this.state.players;
+			updatedPlayers.push({name: `Player ${this.state.players.length + 1}`, isWinner: false})
+			const updatedHands = this.state.hands;
+			updatedHands.push([]);
+			this.setState({players: updatedPlayers, hands: updatedHands});
+		} else {
+			this.setState({errorMessage: 'The max number of players is 6'})
+		}
 	}
 	handleRemovePlayer = index => {
 		if(this.state.players.length > 2) {
@@ -56,7 +64,7 @@ class App extends Component {
 		}
 	}
 	shuffleAndDeal = hands => {
-		this.setState({hands})
+		this.setState({hands, winnerIndex: -1})
 	}
 	render() {
 		return (
@@ -79,10 +87,11 @@ class App extends Component {
 						<p>{this.state.errorMessage}</p>
 					</header>
 					<section>
-						{this.state.players.map((name, index) => {
+						{this.state.players.map((playerObject, index) => {
 							return <Player
-								name={name}
+								name={playerObject.name}
 								hand={this.state.hands[index]}
+								isWinner={playerObject.isWinner}
 								index={index}
 								key={index}
 								onDelete={this.handleRemovePlayer}
