@@ -40,7 +40,7 @@ class Player extends Component {
 			</form>
 		}
 		if (this.props.isWinner) {
-			isWinner = 'is the Winner!!!'
+			isWinner = ' is the Winner!!!'
 		}
 		return (
 			<article>

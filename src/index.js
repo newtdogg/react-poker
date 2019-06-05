@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './Styles/global.css';
-import App from './Components/App';
+import Dealer from './Components/Dealer';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Dealer />, document.getElementById('root'));

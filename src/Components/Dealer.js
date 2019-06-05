@@ -10,7 +10,7 @@ import Button from "./Button";
 
 import { Footer } from "../Styles/Styled";
 
-class App extends Component {
+class Dealer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -47,7 +47,7 @@ class App extends Component {
 			updatedPlayers.push({name: `Player ${this.state.players.length + 1}`, isWinner: false})
 			const updatedHands = this.state.hands;
 			updatedHands.push([]);
-			this.setState({players: updatedPlayers, hands: updatedHands});
+			this.setState({players: updatedPlayers, hands: updatedHands, errorMessage: ''});
 		} else {
 			this.setState({errorMessage: 'The max number of players is 6'})
 		}
@@ -58,7 +58,7 @@ class App extends Component {
 			players.splice(index, 1);
 			const updatedHands = this.state.hands;
 			updatedHands.pop();
-			this.setState({players, hands: updatedHands});
+			this.setState({players, hands: updatedHands, errorMessage: ''});
 		} else {
 			this.setState({errorMessage: 'The min number of players is 2'})
 		}
@@ -68,7 +68,7 @@ class App extends Component {
 		players.forEach(player => {
 			player.isWinner = false;
 		});
-		this.setState({hands, players})
+		this.setState({hands, players, errorMessage: ''})
 	}
 	render() {
 		return (
@@ -112,4 +112,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default Dealer;
