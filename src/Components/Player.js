@@ -46,7 +46,7 @@ class Player extends Component {
 			<article>
 				<p>
 					{this.state.name}{isWinner}
-					<Button onClick={this.enterNameToggle} icon="✏️">Edit</Button>
+					<Button class="editToggle" onClick={this.enterNameToggle} icon="✏️">Edit</Button>
 					<Button onClick={this.handleDeletePlayer} icon="🔥">Remove</Button>
 				</p>
 				{nameForm}

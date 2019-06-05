@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
 import Dealer from './Dealer';
 import Player from './Player';
