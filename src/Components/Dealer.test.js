@@ -3,7 +3,8 @@ import { shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
 import Dealer from './Dealer';
 import Player from './Player';
-import { Card } from "../Styles/Styled";
+import { Card } from '../Styles/Styled';
+import testData from './testData'
 
 describe('<Dealer />', () => {
 	it('renders without crashing', () => {
@@ -51,8 +52,22 @@ describe('<Dealer />', () => {
 	it('players start with no cards in their hands', () => {
 		const wrapper = shallow(<Dealer/>);
 		expect(wrapper.find(Card)).toHaveLength(0);
-		expect(wrapper.state().hands).toHaveLength(2);
-		expect(wrapper.state().hands[0]).toHaveLength(0);
-		expect(wrapper.state().hands[1]).toHaveLength(0);
+		expect(wrapper.state().players).toHaveLength(2);
+		expect(wrapper.state().players[0].hand).toHaveLength(0);
+		expect(wrapper.state().players[1].hand).toHaveLength(0);
 	});
+
+	it('can evaluate 2 hands and declare a winner', () => {
+		const data = testData.testData1;
+		const wrapper = shallow(<Dealer {...{data}}/>);
+		wrapper.instance().evaluateHands();
+		expect(wrapper.state().players[0].isWinner).toBe(true);
+	});
+
+	// it('adds a hand to a new player if other players have a hand', () => {
+	// 	const wrapper = shallow(<Dealer/>);
+	// 	console.log(wrapper.state().players)
+	// 	expect(wrapper.find(Card)).toHaveLength(0);
+	// 	wrapper.instance().shuffleAndDeal(testData.testData2.hands, testData.testData2.additionalHands)
+	// });
 });

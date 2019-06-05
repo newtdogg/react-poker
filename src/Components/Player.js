@@ -44,11 +44,9 @@ class Player extends Component {
 		}
 		return (
 			<article>
-				<p>
-					{this.state.name}{isWinner}
+					<h5>{this.state.name}{isWinner}</h5>
 					<Button class="editToggle" onClick={this.enterNameToggle} icon="✏️">Edit</Button>
 					<Button onClick={this.handleDeletePlayer} icon="🔥">Remove</Button>
-				</p>
 				{nameForm}
 				<PlayerHand>
 					{this.props.hand.map((card, index) => {

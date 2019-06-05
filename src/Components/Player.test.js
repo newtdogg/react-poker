@@ -33,4 +33,10 @@ describe('<Player />', () => {
 		nameInput.simulate('change', { target: { value: 'Player 2' } })
 		expect(wrapper.state().name).toEqual('Player 2');
 	});
+
+	it('can display the winner', () => {
+		const wrapper = shallow(<Player {...{hand: [], name: 'Ted', isWinner: true}}/>);
+		const playerHeader = wrapper.find('h5');
+		expect(playerHeader.text()).toEqual('Ted is the Winner!!!');
+	});
 });

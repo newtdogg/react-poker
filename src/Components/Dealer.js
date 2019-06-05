@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import poker from 'poker-hands';
 
-import { suits, values } from "../utils";
-
 import Layout from "./Layout";
 import Deck from "./Deck";
 import Player from "./Player";
@@ -16,21 +14,24 @@ class Dealer extends Component {
 		this.state = {
 			players: [{
 				name: 'Player 1',
+				hand: [],
 				isWinner: false
 			},{
 				name: 'Player 2',
+				hand: [],
 				isWinner: false
 			}],
+			activeCards: [],
+			additionalHands: [],
 			errorMessage: '',
-			playerIndex: '',
-			hands: [[], []]
+			playerIndex: ''
 		}
 	}
 	evaluateHands = () => {
 		const handsToEvaluate = [];
-		this.state.hands.forEach(hand => {
+		this.state.players.forEach(player => {
 			const handStringArray = [];
-			hand.forEach(card => {
+			player.hand.forEach(card => {
 				handStringArray.push(card.string);
 			});
 			const handString = handStringArray.join(' ');
@@ -44,10 +45,14 @@ class Dealer extends Component {
 	addPlayer = () => {
 		if(this.state.players.length < 6) {
 			const updatedPlayers = this.state.players;
-			updatedPlayers.push({name: `Player ${this.state.players.length + 1}`, isWinner: false})
-			const updatedHands = this.state.hands;
-			updatedHands.push([]);
-			this.setState({players: updatedPlayers, hands: updatedHands, errorMessage: ''});
+			let hand = [];
+			if(this.state.players[0].hand.length !== 0) {
+				hand = this.state.additionalHands[this.state.players.length];
+			}
+			const activeCards = this.state.activeCards;
+			activeCards.push(...hand);
+			updatedPlayers.push({name: `Player ${this.state.players.length + 1}`, isWinner: false, hand})
+			this.setState({players: updatedPlayers, activeCards, errorMessage: ''});
 		} else {
 			this.setState({errorMessage: 'The max number of players is 6'})
 		}
@@ -55,20 +60,27 @@ class Dealer extends Component {
 	handleRemovePlayer = index => {
 		if(this.state.players.length > 2) {
 			const players = this.state.players;
+			const activeCards = [];
 			players.splice(index, 1);
-			const updatedHands = this.state.hands;
-			updatedHands.pop();
-			this.setState({players, hands: updatedHands, errorMessage: ''});
+			players.forEach(player => {
+				activeCards.push(...player.hand)
+			});
+			this.setState({players, activeCards, errorMessage: ''});
 		} else {
 			this.setState({errorMessage: 'The min number of players is 2'})
 		}
 	}
-	shuffleAndDeal = hands => {
+	shuffleAndDeal = (hands, additionalHands) => {
 		const players = this.state.players;
+		let i = 0;
+		const activeCards = [];
 		players.forEach(player => {
 			player.isWinner = false;
+			player.hand = hands[i]
+			activeCards.push(...hands[i])
+			i += 1;
 		});
-		this.setState({hands, players, errorMessage: ''})
+		this.setState({players, activeCards, additionalHands, errorMessage: ''})
 	}
 	render() {
 		return (
@@ -76,8 +88,7 @@ class Dealer extends Component {
 				<section>
 					<h1>Cards deck</h1>
 					<Deck
-						suits={suits}
-						values={values}
+						activeCards={this.state.activeCards}
 						numberOfPlayers={this.state.players.length}
 						handleShuffleAndDeal={this.shuffleAndDeal}
 						reset={this.reset}
@@ -94,7 +105,7 @@ class Dealer extends Component {
 						{this.state.players.map((playerObject, index) => {
 							return <Player
 								name={playerObject.name}
-								hand={this.state.hands[index]}
+								hand={playerObject.hand}
 								isWinner={playerObject.isWinner}
 								index={index}
 								key={index}

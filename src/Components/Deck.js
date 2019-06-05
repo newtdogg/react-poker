@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Card, StyledDeck } from "../Styles/Styled";
+import { suits, values } from "../utils";
+
 import Button from "./Button";
 
 class Deck extends Component {
@@ -7,7 +9,8 @@ class Deck extends Component {
 		super(props);
 		this.state = {
 			deck: this.organiseDeck(),
-			hands: []
+			hands: [],
+			additionalHands: []
 		}
 	}
 	reset = () => {
@@ -20,8 +23,8 @@ class Deck extends Component {
 	}
 	organiseDeck = () => {
 		const deck = [];
-		this.props.suits.forEach(suit => {
-			this.props.values.forEach(value => {
+		suits.forEach(suit => {
+			values.forEach(value => {
 				deck.push({
 					suit,
 					value,
@@ -31,6 +34,12 @@ class Deck extends Component {
 			});
 		});
 		return deck;
+	}
+	setActiveCard = card => {
+		if(this.props.activeCards.includes(card)) {
+			return true;
+		}
+		return false;
 	}
 	checkRandomNum = (nums) => {
 		const rndNum = Math.floor(Math.random() * 52);
@@ -45,24 +54,29 @@ class Deck extends Component {
 		this.setState({ deck: this.organiseDeck()}, () => {
 			const dealtDeck = this.state.deck;
 			const hands = [];
+			const additionalHands = [];
 			const randomNumbers = [];
-			for(let i = 0; i < numberOfPlayers; i++) {
+			for(let i = 0; i < 6; i++) {
 				const hand = [];
 				for(let x = 0; x < 5; x++) {
 					const rndNum = this.checkRandomNum(randomNumbers)
 					randomNumbers.push(rndNum)
 					const card = dealtDeck[rndNum];
-					dealtDeck[rndNum].active = true;
 					hand.push(card);
 				}
-				hands.push(hand);
+				if(i < numberOfPlayers) {
+					hands.push(hand);
+					additionalHands.push([])
+				} else {
+					additionalHands.push(hand)
+				}
 			}
-			this.setState({hands, deck: dealtDeck})
+			this.setState({hands, deck: dealtDeck, additionalHands})
 		})
 	}
 	handleDealHands = async () => {
 		await this.dealHands(this.props.numberOfPlayers);
-		await this.props.handleShuffleAndDeal(this.state.hands)
+		await this.props.handleShuffleAndDeal(this.state.hands, this.state.additionalHands);
 	}
 	render() {
 		return (
@@ -72,7 +86,7 @@ class Deck extends Component {
 						key={card.suit+card.value}
 						suit={card.suit}
 						value={card.value}
-						selected={card.active}
+						selected={this.setActiveCard(card)}
 					>
 						{card.value}
 					</Card>
