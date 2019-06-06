@@ -37,6 +37,7 @@ class Dealer extends Component {
 			const handString = handStringArray.join(' ');
 			handsToEvaluate.push(handString);
 		});
+		console.log(handsToEvaluate)
 		const winnerIndex = poker.judgeWinner(handsToEvaluate);
 		const players = this.state.players;
 		players[winnerIndex].isWinner = true
