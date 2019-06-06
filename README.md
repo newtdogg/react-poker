@@ -19,7 +19,8 @@ I moved onto completing the key parts of the challenge, including solving the ha
 Added a reset button to make sure the hands can be reset. I also added functionality so if a player is added or removed the hands are updated accordingly. This was an uneccessary feature but allowed me to further practice and understand the flow of data between parent and child components. This did complicate my code, and
 
 **5. Testing**
-- Only added  a few tests to hand analyser as i shouldnt need to test a package.
+As I wanted to get the basics of react understood, I started to write tests later than I should have done. This being said I implemented tests on the basic functionality that all passed. Some more complicated tests I found difficult as I was unsure how the focused the tests should be on individual bits of functionality. For example in one of the deck tests, in order to test the reset button I wanted to ensure the players hands were empty, but to do this I needed to access the dealer. I couldn't establish if this was neccessary but the more tests the better so I kept it.
+
 ###Challenges
 
 - Limited experience with react, best practices unknown

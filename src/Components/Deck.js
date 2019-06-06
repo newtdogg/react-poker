@@ -15,11 +15,12 @@ class Deck extends Component {
 	}
 	reset = () => {
 		const hands = [];
+		const additionalHands = [];
 		for(let i = 0; i < this.props.numberOfPlayers; i++) {
 			hands.push([]);
 		}
 		this.setState({deck: this.organiseDeck()});
-		this.props.handleShuffleAndDeal(hands);
+		this.props.handleShuffleAndDeal(hands, additionalHands);
 	}
 	organiseDeck = () => {
 		const deck = [];
@@ -46,7 +47,6 @@ class Deck extends Component {
 		if(nums.includes(rndNum)){
 			return this.checkRandomNum(nums);
 		} else {
-			console.log(rndNum);
 			return rndNum;
 		}
 	}
@@ -83,6 +83,7 @@ class Deck extends Component {
 			<StyledDeck>
 				{this.state.deck.map(card => (
 					<Card
+						card={card}
 						key={card.suit+card.value}
 						suit={card.suit}
 						value={card.value}

@@ -61,13 +61,9 @@ describe('<Dealer />', () => {
 		const data = testData.testData1;
 		const wrapper = shallow(<Dealer {...{data}}/>);
 		wrapper.instance().evaluateHands();
+		const players = wrapper.find(Player);
+		expect(players.get(0).props.isWinner).toBe(true);
 		expect(wrapper.state().players[0].isWinner).toBe(true);
 	});
 
-	// it('adds a hand to a new player if other players have a hand', () => {
-	// 	const wrapper = shallow(<Dealer/>);
-	// 	console.log(wrapper.state().players)
-	// 	expect(wrapper.find(Card)).toHaveLength(0);
-	// 	wrapper.instance().shuffleAndDeal(testData.testData2.hands, testData.testData2.additionalHands)
-	// });
 });
